@@ -10,8 +10,6 @@ invitados = []
 procesos = []
 sillas = threading.BoundedSemaphore(value=3)
 
-
-
 def comer(nombre):
 	with sillas:
 		print "comiendo"
