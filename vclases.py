@@ -1,10 +1,11 @@
 class Vaca:
-	def __init__ (self,estaViva=True,estaLista=False,celo=False,peso=150,nocome=0):
+	def __init__ (self,estaViva=True,estaLista=False,celo=False,peso=150,nocome=0,cria=False):
 		self.estaViva=estaViva
 		self.estaLista=estaLista
 		self.celo=celo
 		self.peso=peso
 		self.nocome=nocome
+		self.cria=cria
 
 	#Getters & Setters
 	def getEstaViva(self):
@@ -23,7 +24,7 @@ class Vaca:
 		self.celo=celo
 		return self.celo
 	def getPeso(self):
-		return self.celo
+		return self.peso
 	def setPeso(self,peso):
 		self.peso=peso
 		return self.peso
@@ -32,6 +33,11 @@ class Vaca:
 	def setNoCome(self, dias):
 		self.nocome=self.nocome+dias
 		return self.nocome
+	def getCria(self):
+		return self.cria
+	def setCria(self, cria):
+		self.cria=self.cria
+		return self.cria
 
 	#Metodos
 	def morir(self):

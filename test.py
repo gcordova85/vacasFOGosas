@@ -30,6 +30,7 @@ def entrar():
 # Aca se agregan igual cantidad de personas esperando sentarse como personas que van a entrar al local. 
 def constructor():
 	personas=input("cantidad: ")
+	
 	for x in range(personas):
 		x = Thread(target=comer, args=(x,))
 		procesos.append(x)

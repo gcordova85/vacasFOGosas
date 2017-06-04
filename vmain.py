@@ -1,16 +1,19 @@
-import time
 import threading
+from threading import Thread, Lock
+import time
+from random import randint
 from vprocesos import *
 
-def main():
+def constructor():
 	v1=threading.Thread(target=vacaVive, args=())
 	v1.start()
-	time.sleep(1)
+
 	v2=threading.Thread(target=vacaVive, args=())
 	v2.start()
-	time.sleep(1)
+
 	v3=threading.Thread(target=vacaVive, args=())
 	v3.start()
-	time.sleep(1)
+	
+constructor()
 
-main()
+
