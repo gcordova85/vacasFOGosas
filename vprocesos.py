@@ -3,22 +3,32 @@ import threading
 from vclases import *
 
 comida=Pasto()
+
+
 		
 def vacaVive(nombre):
-	vaca=Vaca(nombre, True, False, False, 150, 0, False)
-	pasarDias(vaca, 120, False, False, 0)
+	vaca=Vaca(nombre, True, False, False, 300, 0, False)
+	# nombre, estaViva, estaLista, celo, peso, nocome, cria
+	pasarDias(vaca, 350, 0, False, 0)
+	# vaca, diaActual, celo, cria, sinComer
 
 
 # ----- IMPORTANTE-------
 # Este codigo va pasando los dias y en base a ellos va activando eventos relacionados a la vida de la vaca.
 def pasarDias(vaca, diaActual, celo, cria, sinComer):
+	if vaca.getEstaViva() == False:
+		exit()
+	# PONGO EL EXIT PARA SACAR CAPTURA
+	if diaActual == 367:
+		exit()
 	dia = diaActual
-	comida.comer(vaca.incremento())
+	print "-----------------------"
+	print vaca.getNombre() + ". Edad: " + str(dia) + " dias." + " Peso: " +str(vaca.getPeso()) + " Kilos." +" Dia de celo: "+str(celo)
 	if comida.comer(vaca.incremento()) == True:
-		print comida.getDisponibilidad()
-		print vaca.getNombre()
 		vaca.engordar()
-		sinComer=0
+		# -------------------------- IMPORTANTE -----------------------
+		# Yo pondria sinComer como atributo de VACA para que optima pueda ver si debe inseminar cuando la vaca esta hambreada.
+		sinComer = 0
 	else:
 		if sinComer == 7:
 			print vaca.getNombre()+"vaca murio"
@@ -26,31 +36,49 @@ def pasarDias(vaca, diaActual, celo, cria, sinComer):
 			exit()
 			# Muere la vaca y se quita su proceso del multithreading.
 		else:
-			print vaca.getNombre()+"se muere"
+			print "Sin alimento."
 			sinComer+=1
 			vaca.adelgazar()
 			# El pasto le avisa a Esfuerzo que necesita comida
 	# El celo llega cada 21 dias y tarda una solo.
-		
 	if celo == 21:
 		vaca.setCelo(True)
+		vaca.entrarCelo()
+		celo +=1
 		# Optima se fija si la insemina
 		# Si la vaca no fue inseminada hay que cambiar el celo a 0 de vuelta
-	if vaca.getCria==True:
+	if celo> 21:
+		vaca.setCelo(False)
+		celo = 0
+	if vaca.getCria()==True:
 		# Dias que tarda en nacer una vaca
 		if cria < 283:
 			cria +=1
 			celo = 0
 		else:
-			# Vaca termina pariendo y pasan 45 dias antes de entrar en celo
+			#Nace la cria
+			print "Ha nacido la cria"
+			vaca.setCria(False)
 			celo = -24
-	if celo<21 and vaca.getCria == False:
+	if celo<21 and vaca.getCria() == False:
 		celo+=1
-	if vaca.getCria == False and dia > 365:
-		pass
+	if vaca.getCria() == False and dia > 365:
+		vaca.irMatadero()
 		# Optima se fija si es momento de sacrificar.
 	dia +=1
-	time.sleep(10)
+	falloProbabilidad = fallo.probabilidad()
+	if falloProbabilidad == "hambreError":
+		print "Algo fallo con la comida!"
+		sinComer = 6
+	elif falloProbabilidad == "criaError":
+		print "Algo fallo con la cria!"
+		vaca.setCria(False)
+		exit()
+	elif falloProbabilidad == "celoError":
+		print "Algo fallo con el celo"
+		vaca.setCelo(-10)
+		exit()
+	time.sleep(0.1)
 	pasarDias(vaca, dia, celo, cria, sinComer)
 
 

@@ -8,7 +8,7 @@ from vprocesos import *
 
 def constructor():
 
-	v1=threading.Thread(target=vacaVive, args=("vaca1",))
+	v1=threading.Thread(target=vacaVive, args=("Vaca1",))
 	v1.start()
 
 	# v2=threading.Thread(target=vacaVive, args=("vaca2",))

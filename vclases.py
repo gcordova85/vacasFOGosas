@@ -1,5 +1,6 @@
 import threading
 from threading import Thread, Lock
+from random import randint
 
 class Vaca:
 	def __init__ (self, nombre, estaViva, estaLista, celo, peso, nocome, cria):
@@ -45,7 +46,7 @@ class Vaca:
 	def getCria(self):
 		return self.cria
 	def setCria(self, cria):
-		self.cria=self.cria
+		self.cria=cria
 		return self.cria
 
 	#Metodos
@@ -60,11 +61,16 @@ class Vaca:
 		return aux
 	def adelgazar(self):
 		self.peso=self.peso-1.2
-
+	def entrarCelo(self):
+		p1=threading.Thread(target=optima.inseminar, args=(self,))
+		p1.start()
+	def irMatadero(self):
+		p1=threading.Thread(target=optima.matar, args=(self,))
+		p1.start()
 
 class Pasto():
 	#Constructor
-	def __init__ (self, disponibilidad=100):
+	def __init__ (self, disponibilidad=1000):
 		self.dispInicial=disponibilidad
 		self.disponibilidad=disponibilidad
 
@@ -83,11 +89,9 @@ class Pasto():
 	def comer(self,consumo):
 		if consumo < self.disponibilidad:
 			self.disponibilidad=self.disponibilidad-consumo
-			print "\n"+"El pasto esta siendo comido"+"\n"+"Queda", self.disponibilidad, "de pasto"+"\n"
+			print "\n"+"Se alimento con el pasto."+"\n"+"Quedan", self.disponibilidad, "kilos disponibles."+"\n"
 			return True
 		else:
-			print "entra"
-			optima = Optima()
 			p1=threading.Thread(target=optima.sembrar, args=(self,))
 			p1.start()
 			return False
@@ -100,10 +104,27 @@ class Optima():
 	def sembrar(self, campo):
 		with disponibilidad:
 			# Como es probable que mas de una vaca llame al metodo solo se activa si el pasto es menor al 10%
-			if campo.getDisponibilidad() < campo.getDispInicial()*0.1:
-				print "\n"+"Resembrando pasto"+"\n"
+			if campo.getDisponibilidad() < campo.getDispInicial()*0.2:
+				print "\n"+"Optima ha decidido sembrar."+"\n"
 				campo.setDisponibilidad(campo.getDispInicial()) 
 	
+	def inseminar(self, vaca):
+		with disponibilidad:
+			#Aca habria que ver si realmente vale la pena inseminar por medio de calculos de varias variables. (Ej: cant. maxima de ganado soportado)
+			if vaca.getPeso() < 200:
+				print "Optima ha decidido no inseminar por bajo peso."
+			else:
+				vaca.setCria(True)
+				print "Optima ha decidido inseminar"
+
+	def matar(self, vaca):
+		with disponibilidad:
+			if vaca.getPeso() < 400:
+				print "Vaca demasiado delgada"
+				return False
+			else:
+				print "Vaca llevada al matadero"
+				vaca.morir()
 
 class Esfuerzo():
 	#Constructor
@@ -126,6 +147,22 @@ class Esfuerzo():
 		print "Se despiden "+str(cant)+" persona/s"
 		self.personas=self.personas-cant
 
+class fallo():
+	def probabilidad(self):
+		random = randint(0,30)
+		if random == 0:
+			return "hambreError"
+		elif random == 1:
+			return "criaError"
+		elif random == 2:
+			return "celoError"
+	
+
+
+
+
 esfuerzo = Esfuerzo(1)
 cantidad = esfuerzo.getEsfuerzo()
 disponibilidad = threading.BoundedSemaphore(value=cantidad)
+optima = Optima()
+fallo = fallo()
