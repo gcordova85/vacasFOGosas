@@ -3,10 +3,10 @@ from threading import Thread, Lock
 from random import randint
 
 class Vaca:
-	def __init__ (self, nombre, estaViva, estaLista, celo, peso, nocome, cria):
+	def __init__ (self, nombre, estaViva, celo, peso, nocome, cria):
 		self.nombre=nombre
 		self.estaViva=estaViva
-		self.estaLista=estaLista
+		#~ self.estaLista=estaLista
 		self.celo=celo
 		self.peso=peso
 		self.nocome=nocome
@@ -23,10 +23,10 @@ class Vaca:
 	def setEstaViva(self,estado):
 		self.estaViva = estado
 		return self.estaViva
-	def getEstaLista(self):
-		return self.estaLista
-	def setEstaLista(self,estado):
-		self.estaLista = estado
+	#~ def getEstaLista(self):
+		#~ return self.estaLista
+	#~ def setEstaLista(self,estado):
+		#~ self.estaLista = estado
 		return self.estaLista
 	def getCelo(self):
 		return self.celo
@@ -68,7 +68,7 @@ class Vaca:
 		p1=threading.Thread(target=optima.matar, args=(self,))
 		p1.start()
 
-class Pasto():
+class Comida():
 	#Constructor
 	def __init__ (self, disponibilidad=1000):
 		self.dispInicial=disponibilidad
@@ -146,8 +146,14 @@ class Esfuerzo():
 	def rajar(self,cant):
 		print "Se despiden "+str(cant)+" persona/s"
 		self.personas=self.personas-cant
-
-class fallo():
+	def matar(self,vaca):
+		pass
+	def sembrar(self, comida):
+		pass
+	def inseminar(self, vaca):
+		pass
+		
+class Falla():
 	def probabilidad(self):
 		random = randint(0,30)
 		if random == 0:
@@ -165,4 +171,4 @@ esfuerzo = Esfuerzo(1)
 cantidad = esfuerzo.getEsfuerzo()
 disponibilidad = threading.BoundedSemaphore(value=cantidad)
 optima = Optima()
-fallo = fallo()
+fallo = Falla()

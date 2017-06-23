@@ -2,12 +2,12 @@ import time
 import threading
 from vclases import *
 
-comida=Pasto()
+comida=Comida()
 
 
 		
 def vacaVive(nombre):
-	vaca=Vaca(nombre, True, False, False, 300, 0, False)
+	vaca=Vaca(nombre, True, False, 300, 0, False)
 	# nombre, estaViva, estaLista, celo, peso, nocome, cria
 	pasarDias(vaca, 350, 0, False, 0)
 	# vaca, diaActual, celo, cria, sinComer
@@ -66,15 +66,15 @@ def pasarDias(vaca, diaActual, celo, cria, sinComer):
 		vaca.irMatadero()
 		# Optima se fija si es momento de sacrificar.
 	dia +=1
-	falloProbabilidad = fallo.probabilidad()
-	if falloProbabilidad == "hambreError":
+	fallaProbabilidad = fallo.probabilidad()
+	if fallaProbabilidad == "hambreError":
 		print "Algo fallo con la comida!"
 		sinComer = 6
-	elif falloProbabilidad == "criaError":
+	elif fallaProbabilidad == "criaError":
 		print "Algo fallo con la cria!"
 		vaca.setCria(False)
 		exit()
-	elif falloProbabilidad == "celoError":
+	elif fallaProbabilidad == "celoError":
 		print "Algo fallo con el celo"
 		vaca.setCelo(-10)
 		exit()
